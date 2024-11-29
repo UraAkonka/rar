@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <windows.h>
+#include <vector>
 
 using namespace std;
 
@@ -33,14 +34,20 @@ struct filehead {
 #pragma pack(pop)
 
 void rar(const string &filename){
-    ifstream file(filename, ios::binary);
-    if (!file.is_open()){
+    ifstream rar_file("Example.rar");
+    if (rar_file.is_open()){
         cout << "Неудалось открыть файл" << endl;
     }
-    VolumeHeaderFormat header_size;
-    file.read(filename, VolumeHeaderFormat.header_size);
-}
+    else{
+        vector<char> signature(7);
+        rar_file.read(signature.data(),7);
+        string signature_str(signature.data());
+        if (signature_str == "Rar!"){
+            cout << "Reading rar" << endl;
+        }
 
+    }
+}
 
 
 
