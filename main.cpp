@@ -2,17 +2,18 @@
 #include <fstream>
 #include <windows.h>
 #include <vector>
+#include <cstdint>
 
 using namespace std;
 
 #pragma pack(push, 1)
 
-struct VolumeHeaderFormat {
-    uint8_t signature;
-    uint8_t header_crc;
+struct header {
+    uint16_t header_crc;
     uint8_t header_type;
-    uint8_t header_flags;
-    uint8_t header_size;
+    uint16_t header_flags;
+    uint16_t header_size;
+    char padding[8]; // Пропуск 8 байтов
 };
 
 
@@ -33,26 +34,45 @@ struct filehead {
 
 #pragma pack(pop)
 
-void rar(const string &filename){
-    ifstream rar_file("Example.rar");
-    if (rar_file.is_open()){
+void rar(){
+    ifstream rar_file("C:\\1111\\Example.rar");
+    if (!rar_file.is_open()){
         cout << "Неудалось открыть файл" << endl;
     }
     else{
-        vector<char> signature(7);
+        rar_file.seekg(0,ios::end);
+        int size = rar_file.tellg();
+        cout << size << endl;
+
+        vector<char> rar_data(size, 0);
+
+        rar_data.read(rar_data.data(), size);
+
+        rar_header *p_header = reinterpret_cast<rar_header*> (&rar_data[7]);
+
+        cout << p_header->header_size << endl;
+
+        vector<char> signature(7,0);
         rar_file.read(signature.data(),7);
-        string signature_str(signature.data());
+        string signature_str(signature.data(), 4);
         if (signature_str == "Rar!"){
             cout << "Reading rar" << endl;
         }
 
+        rar_file.seekg(7+2,ios::beg);
+        char c;
+        rar_file.get(c);
+        cout << int(c);
+
     }
+
 }
 
 
 
 int main()
 {
-    cout << "Hello world!" << endl;
+    setlocale(LC_ALL,"Russian");
+    rar();
     return 0;
 }
