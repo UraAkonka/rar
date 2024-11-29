@@ -46,20 +46,15 @@ void rar(){
 
         vector<char> rar_data(size, 0);
 
-        rar_data.read(rar_data.data(), size);
+        rar_file.read(rar_data.data(), size);
 
-        rar_header *p_header = reinterpret_cast<rar_header*> (&rar_data[7]);
+        header *p_header = reinterpret_cast<header*> (&rar_data[7]);
 
-        cout << p_header->header_size << endl;
+        cout << int(p_header->header_size) << endl;
+        cout << int(p_header->header_type) << endl;
 
-        vector<char> signature(7,0);
-        rar_file.read(signature.data(),7);
-        string signature_str(signature.data(), 4);
-        if (signature_str == "Rar!"){
-            cout << "Reading rar" << endl;
-        }
 
-        rar_file.seekg(7+2,ios::beg);
+        rar_file.seekg(0,ios::beg);
         char c;
         rar_file.get(c);
         cout << int(c);
