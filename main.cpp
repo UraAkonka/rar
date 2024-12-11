@@ -30,6 +30,7 @@ struct FileHead
 // Восстановить выравнивание
 #pragma pack(pop)
 
+
 // Функция для чтения оглавления архива RAR4
 void readRarContents(const vector<char>& rarData)
 {
@@ -63,6 +64,7 @@ void readRarContents(const vector<char>& rarData)
 int main()
 {
     setlocale(LC_ALL, "RUS");
+
     // Открыть файл в двоичном режиме
     ifstream rarFile("D:\\rar\\Example.rar", ios::binary);
 
