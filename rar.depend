@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1733925288 source:d:\rar\main.cpp
+	<iostream>
+	<fstream>
+	<vector>
+	<cstdint>
+
